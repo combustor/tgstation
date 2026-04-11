@@ -43,9 +43,7 @@
 	new /obj/item/stack/rods(loc, 5)
 
 	if(grill_fuel > 0)
-		var/datum/effect_system/fluid_spread/smoke/bad/smoke = new
-		smoke.set_up(1, holder = src, location = loc)
-		smoke.start()
+		do_smoke(1, src, loc, smoke_type = /datum/effect_system/fluid_spread/smoke/bad)
 
 /obj/machinery/grill/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	. = NONE
@@ -62,7 +60,7 @@
 		context[SCREENTIP_CONTEXT_LMB] = "Add item"
 		return CONTEXTUAL_SCREENTIP_SET
 	else if(held_item.tool_behaviour == TOOL_WRENCH)
-		context[SCREENTIP_CONTEXT_LMB] = "[anchored ? "Un" : ""]anchor"
+		context[SCREENTIP_CONTEXT_LMB] = "[anchored ? "Unan" : "An"]chor"
 		return CONTEXTUAL_SCREENTIP_SET
 	else if(!anchored && held_item.tool_behaviour == TOOL_CROWBAR)
 		context[SCREENTIP_CONTEXT_LMB] = "Deconstruct"
@@ -273,9 +271,7 @@
 	//use fuel, create smoke puffs for immersion
 	grill_fuel -= fuel_usage
 	if(SPT_PROB(0.5, seconds_per_tick))
-		var/datum/effect_system/fluid_spread/smoke/bad/smoke = new
-		smoke.set_up(1, holder = src, location = loc)
-		smoke.start()
+		do_smoke(1, src, loc, smoke_type = /datum/effect_system/fluid_spread/smoke/bad)
 
 	fuel_usage = GRILL_FUELUSAGE_ACTIVE * seconds_per_tick
 	if(!QDELETED(grilled_item))
